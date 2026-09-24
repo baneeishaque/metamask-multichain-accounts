@@ -1,0 +1,18 @@
+# Markdown is governed by markdownlint-cli2 (120-char line rule), not Prettier.
+*.md
+
+# Generated / vendored output
+node_modules/
+coverage/
+package-lock.json
+
+# Media and binary production artifacts
+content/youtube/build/
+content/youtube/audio/
+content/youtube/subtitles/
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.ico
+*.svg

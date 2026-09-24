@@ -1,0 +1,39 @@
+{
+  "name": "metamask-multichain-accounts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Industrial BIP-39 / BIP-32 / SLIP-0010 account-derivation demo: one MetaMask recovery phrase, four chain families (EVM, Bitcoin, Solana, TRON), plus the multilingual content kit and webinar plan.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "derive": "tsx src/cli.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "markdownlint": "markdownlint-cli2 \"**/*.md\"",
+    "markdownlint:fix": "markdownlint-cli2 --fix \"**/*.md\"",
+    "slides": "node content/youtube/render-slides.mjs",
+    "verify": "npm run typecheck && npm run test && npm run format:check && npm run markdownlint"
+  },
+  "dependencies": {
+    "@noble/curves": "2.4.0",
+    "@noble/hashes": "2.4.0",
+    "@scure/base": "2.4.0",
+    "@scure/bip32": "2.4.0",
+    "@scure/bip39": "2.4.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "26.6.2",
+    "markdownlint-cli2": "0.23.3",
+    "prettier": "3.9.9",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "5.0.1"
+  }
+}
