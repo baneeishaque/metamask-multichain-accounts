@@ -1,0 +1,37 @@
+WEBVTT
+
+00:00:00.400 --> 00:00:24.782
+Satu akun MetaMask, dua belas jaringan: Ethereum, Linea, Base, Arbitrum, BNB Chain, OP Mainnet, Polygon, Monad, Arc, Bitcoin, Solana dan TRON. Tapi hanya empat alamat, dan hanya satu kunci privat yang akan ditampilkan wallet. Inilah alasannya, dan cara memverifikasi setiap langkah sendiri.
+
+00:00:26.582 --> 00:00:46.910
+Wallet mencantumkan dua belas jaringan, tetapi halaman detail akun hanya menampilkan kunci privat untuk akun EVM. Bitcoin, Solana dan TRON hanya menampilkan alamat tanpa yang lain. Ini terlihat seperti celah. Padahal justru jendela paling jelas ke cara seluruh wallet dibangun.
+
+00:00:48.710 --> 00:01:13.228
+Dua belas kata pada cadangan Anda mewakili 128 bit entropi, dan BIP-39 meregangkannya menjadi seed 64 byte dengan PBKDF2-HMAC-SHA512, 2048 putaran, dan frasa sandi opsional yang dicampur ke salt. Seed inilah sumber turunan semua hal lainnya.
+
+00:01:15.028 --> 00:01:43.222
+Seed menumbuhkan dua pohon kunci yang independen. secp256k1, yaitu Bitcoin, Ethereum dan TRON, memakai BIP-32, tempat kunci anak ditambahkan ke kunci induk di atas kurva. Kunci ed25519 milik Solana adalah seed hash, bukan titik kurva, jadi penambahan itu tidak ada, dan SLIP-0010 menggantikannya.
+
+00:01:45.022 --> 00:02:09.722
+Empat jalur derivasi memilih empat cabang. EVM berada di tipe koin 60 BIP-44, Bitcoin memakai tujuan 84 untuk SegWit asli, Solana adalah tipe koin 501, TRON adalah tipe koin 195. Nomor tipe koin adalah standar terdaftar, dan apostrof menandai derivasi hardened.
+
+00:02:11.522 --> 00:02:39.294
+SLIP-0010 menghapus separuh BIP-32 yang membutuhkan aritmetika kurva. Kunci anak menjadi HMAC dari kunci privat induk dan chain code, yang bekerja di semua kurva, tetapi hanya untuk derivasi hardened. Itulah sebabnya setiap segmen jalur Solana berakhir dengan apostrof, dan ed25519 tidak punya kunci publik yang diperluas.
+
+00:02:41.094 --> 00:03:14.405
+Setiap cabang mengenkode kuncinya dengan cara berbeda. EVM melakukan hash keccak-256 pada kunci tak terkompresi dan menyimpan 20 byte dengan checksum EIP-55. Bitcoin membungkus HASH160 dari kunci terkompresi dalam bech32. Solana mengenkode kunci publik mentah dengan base58. TRON mengambil 20 byte yang sama seperti EVM, menambahkan awalan 41, lalu base58check.
+
+00:03:16.205 --> 00:03:37.057
+Cabang EVM bukanlah akun Ethereum. Derivasi alamat tidak pernah bertanya sedang di chain mana, tanpa chain ID, tanpa nama jaringan, sehingga satu kunci menghasilkan alamat yang sama di kesembilan jaringan EVM. Kunci sama, alamat sama, di setiap chain EVM, selamanya.
+
+00:03:38.857 --> 00:04:01.722
+Yang tidak menyatu adalah semua hal di atas kunci. Sembilan jaringan menyimpan sembilan buku besar terpisah dan sembilan token gas: ETH di sebagian besar, BNB di BNB Chain, POL di Polygon, MON di Monad. Memegang ETH di Ethereum tidak membayar biaya di tempat lain, dan saldo di satu chain tak terlihat di chain berikutnya.
+
+00:04:03.522 --> 00:04:24.880
+Kata sandi MetaMask mendekripsi vault lokal dan tidak yang lain. Frasa pemulihan memulihkan keempat cabang, ia adalah satu-satunya titik kegagalan untuk semuanya. Kunci privat mengendalikan tepat satu cabang. Bocorkan satu kunci, hilang satu cabang; bocorkan frasa, hilang semuanya.
+
+00:04:26.680 --> 00:04:53.007
+Derivasi sepenuhnya ditentukan oleh standar publik: BIP-39, BIP-32, BIP-84, SLIP-0010, EIP-55. Repositori mereproduksinya dalam sekitar 300 baris TypeScript, dipatok terhadap vektor spesifikasi resmi. Jalankan npm run derive dan keempat akun muncul dari frasa uji publik.
+
+00:04:54.807 --> 00:05:12.243
+Kode, panduan derivasi, penjelasan baris demi baris dan trade-off-nya tersedia untuk publik di bawah lisensi MIT. Impor frasa uji publik yang sama ke wallet mana pun yang patuh standar dan keempat alamat itu cocok. Tautan di deskripsi.

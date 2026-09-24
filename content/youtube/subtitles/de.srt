@@ -1,0 +1,47 @@
+1
+00:00:00,400 --> 00:00:21,825
+Ein MetaMask-Konto, zwölf Netzwerke: Ethereum, Linea, Base, Arbitrum, BNB Chain, OP Mainnet, Polygon, Monad, Arc, Bitcoin, Solana und TRON. Aber nur vier Adressen, und nur ein privater Schlüssel, den die Wallet anzeigt. Hier ist, warum, und wie du jeden Schritt selbst überprüfen kannst.
+
+2
+00:00:23,625 --> 00:00:42,203
+Die Wallet listet zwölf Netzwerke, aber die Kontodetails zeigen einen privaten Schlüssel nur für das EVM-Konto. Bitcoin, Solana und TRON zeigen eine Adresse und sonst nichts. Das sieht nach einer Lücke aus. Tatsächlich ist es der klarste Blick darauf, wie die ganze Wallet aufgebaut ist.
+
+3
+00:00:44,003 --> 00:01:05,247
+Die zwölf Wörter deiner Sicherung stehen für 128 Bit Entropie, und BIP-39 dehnt sie mit PBKDF2-HMAC-SHA512, 2048 Runden und einer optionalen Passphrase im Salt zu einem 64-Byte-Seed. Aus diesem Seed wird alles Weitere abgeleitet.
+
+4
+00:01:07,047 --> 00:01:33,148
+Aus dem Seed wachsen zwei unabhängige Schlüsselbäume. secp256k1, also Bitcoin, Ethereum und TRON, nutzt BIP-32, bei dem Kindschlüssel auf der Kurve zum Elternschlüssel addiert werden. Solanas ed25519-Schlüssel sind Hash-Seeds und keine Kurvenpunkte, diese Addition gibt es dort nicht, und SLIP-0010 tritt an ihre Stelle.
+
+5
+00:01:34,948 --> 00:01:58,004
+Vier Ableitungspfade wählen die vier Zweige. EVM liegt bei BIP-44 Coin-Typ 60, Bitcoin nutzt Purpose 84 für natives SegWit, Solana ist Coin-Typ 501, TRON ist Coin-Typ 195. Die Coin-Typ-Nummern sind registrierte Standards, und die Apostrophe markieren gehärtete Ableitung.
+
+6
+00:01:59,804 --> 00:02:26,201
+SLIP-0010 entfernt die Hälfte von BIP-32, die Kurvenarithmetik braucht. Ein Kindschlüssel wird zum HMAC aus privatem Elternschlüssel und Chain Code, was auf jeder Kurve funktioniert, aber nur für gehärtete Ableitung. Darum endet jedes Segment in Solanas Pfad mit einem Apostroph, und darum hat ed25519 keine erweiterten öffentlichen Schlüssel.
+
+7
+00:02:28,001 --> 00:02:58,233
+Jeder Zweig kodiert seinen Schlüssel anders. EVM hasht den unkomprimierten Schlüssel mit keccak-256 und behält 20 Bytes mit einer EIP-55-Prüfsumme. Bitcoin packt einen HASH160 des komprimierten Schlüssels in bech32. Solana kodiert den rohen öffentlichen Schlüssel in base58. TRON nimmt dieselben 20 Bytes wie EVM, stellt 41 voran und wendet base58check an.
+
+8
+00:03:00,033 --> 00:03:19,926
+Der EVM-Zweig ist nicht das Ethereum-Konto. Die Adressableitung fragt nie, auf welcher Chain sie läuft, keine chain ID, kein Netzwerkname, also erzeugt ein Schlüssel dieselbe Adresse auf allen neun EVM-Netzwerken. Derselbe Schlüssel, dieselbe Adresse, auf jeder EVM-Chain, für immer.
+
+9
+00:03:21,726 --> 00:03:43,342
+Was nicht zusammenfällt, ist alles oberhalb des Schlüssels. Neun Netzwerke führen neun getrennte Kontobücher und neun Gas-Token: ETH auf den meisten, BNB auf BNB Chain, POL auf Polygon, MON auf Monad. ETH auf Ethereum zahlt nirgendwo sonst Gebühren, und ein Guthaben auf einer Chain ist auf der nächsten unsichtbar.
+
+10
+00:03:45,142 --> 00:04:04,052
+Das MetaMask-Passwort entschlüsselt nur den lokalen Tresor und sonst nichts. Die Wiederherstellungsphrase stellt alle vier Zweige wieder her, sie ist der einzige Ausfallpunkt für alles. Ein privater Schlüssel kontrolliert genau einen Zweig. Ein Schlüssel leckt, ein Zweig weg; die Phrase leckt, alles weg.
+
+11
+00:04:05,852 --> 00:04:34,597
+Die Ableitung ist vollständig durch öffentliche Standards festgelegt: BIP-39, BIP-32, BIP-84, SLIP-0010, EIP-55. Das Repository reproduziert sie in etwa 300 Zeilen TypeScript, an die offiziellen Spezifikationsvektoren gepinnt. Führe npm run derive aus, und alle vier Konten erscheinen aus einer öffentlichen Testphrase.
+
+12
+00:04:36,397 --> 00:04:53,283
+Der Code, die Ableitungsanleitung, die Erklärungen Zeile für Zeile und die Abwägungen sind öffentlich unter der MIT-Lizenz. Importiere dieselbe öffentliche Testphrase in jede standardkonforme Wallet, und die vier Adressen stimmen überein. Link in der Beschreibung.

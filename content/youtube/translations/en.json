@@ -1,0 +1,50 @@
+{
+  "intro": {
+    "title": "Twelve networks. Four accounts. One phrase.",
+    "narration": "One MetaMask account, twelve networks: Ethereum, Linea, Base, Arbitrum, BNB Chain, OP Mainnet, Polygon, Monad, Arc, Bitcoin, Solana and TRON. But only four addresses — and only one private key the wallet will show you. Here is why, and how to verify every step yourself."
+  },
+  "problem": {
+    "title": "Where is the rest of my wallet?",
+    "narration": "The wallet lists twelve networks, but the account details page shows a private key for the EVM account only. Bitcoin, Solana and TRON show an address and nothing else. It looks like a gap. It is actually the clearest window into how the whole wallet is built."
+  },
+  "phrase-to-seed": {
+    "title": "A phrase is not a key.",
+    "narration": "The twelve words on your backup encode one hundred and twenty-eight bits of entropy, and BIP-39 stretches them into a sixty-four-byte seed with PBKDF2-HMAC-SHA512, two thousand and forty-eight rounds, and an optional passphrase mixed into the salt. The seed is what everything else derives from."
+  },
+  "two-curves": {
+    "title": "One seed, two trees.",
+    "narration": "The seed grows two independent key trees. secp256k1 — Bitcoin, Ethereum and TRON — uses BIP-32, where child keys are added to the parent on the curve. Solana's ed25519 keys are hash seeds, not curve points, so that addition does not exist, and SLIP-0010 takes its place."
+  },
+  "paths": {
+    "title": "Four paths, four keys.",
+    "narration": "Four derivation paths select the four branches. EVM sits at BIP-44 coin type sixty; Bitcoin uses purpose eighty-four for native SegWit; Solana is coin type five-oh-one; TRON is coin type one-ninety-five. The coin-type numbers are registered standards, and the apostrophes mark hardened derivation."
+  },
+  "solana-slip10": {
+    "title": "Why Solana's apostrophes are mandatory.",
+    "narration": "SLIP-0010 removes the half of BIP-32 that needs curve arithmetic. A child key becomes an HMAC of the parent's private key and chain code — which works on every curve, but only for hardened derivation. That is why every Solana path segment ends in an apostrophe, and why ed25519 has no extended public keys."
+  },
+  "encodings": {
+    "title": "Four ways to write an address.",
+    "narration": "Each branch encodes its key differently. EVM hashes the uncompressed key with keccak-256 and keeps twenty bytes with an EIP-55 checksum. Bitcoin wraps a HASH160 of the compressed key in bech32. Solana base58-encodes the raw public key. TRON takes the same twenty bytes as EVM, prefixes forty-one, and base58checks them."
+  },
+  "evm-shared": {
+    "title": "Nine networks, one key.",
+    "narration": "The EVM branch is not the Ethereum account. Address derivation never asks which chain it is on — no chain ID, no network name — so one key produces the same address on all nine EVM networks. Same key, same address, on every EVM chain, forever."
+  },
+  "balances": {
+    "title": "One address, nine ledgers.",
+    "narration": "What does not collapse is everything above the key. Nine networks keep nine separate ledgers and nine gas tokens: ETH on most, BNB on BNB Chain, POL on Polygon, MON on Monad. Holding ETH on Ethereum does not pay fees anywhere else, and a balance on one chain is invisible on the next."
+  },
+  "secrets": {
+    "title": "Three secrets, three jobs.",
+    "narration": "The MetaMask password decrypts the local vault and nothing else. The recovery phrase restores all four branches — it is the single point of failure for everything. A private key controls exactly one branch. Leak one key, lose one branch; leak the phrase, lose everything."
+  },
+  "verify": {
+    "title": "Verify it yourself.",
+    "narration": "The derivation is fully specified by public standards — BIP-39, BIP-32, BIP-84, SLIP-0010, EIP-55 — and the repository reproduces it in about three hundred lines of TypeScript, pinned against the official specification vectors. Run npm run derive and all four accounts appear from a public test phrase."
+  },
+  "outro": {
+    "title": "Twelve networks, four accounts, one phrase.",
+    "narration": "The code, the derivation guide, the line-by-line explainers and the trade-offs are public under the MIT license. Import the same public test phrase into any standards-compliant wallet and the four addresses match. Link in the description."
+  }
+}

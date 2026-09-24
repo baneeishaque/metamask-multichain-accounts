@@ -1,0 +1,50 @@
+{
+  "intro": {
+    "title": "Mười hai mạng. Bốn tài khoản. Một cụm từ.",
+    "narration": "Một tài khoản MetaMask, mười hai mạng: Ethereum, Linea, Base, Arbitrum, BNB Chain, OP Mainnet, Polygon, Monad, Arc, Bitcoin, Solana và TRON. Nhưng chỉ có bốn địa chỉ, và chỉ một khóa riêng tư mà ví sẽ hiển thị cho bạn. Đây là lý do, và cách bạn tự xác minh từng bước."
+  },
+  "problem": {
+    "title": "Phần còn lại của ví tôi ở đâu?",
+    "narration": "Ví liệt kê mười hai mạng, nhưng trang chi tiết tài khoản chỉ hiển thị khóa riêng tư cho tài khoản EVM. Bitcoin, Solana và TRON chỉ hiển thị một địa chỉ và không có gì khác. Điều này trông như một khoảng trống. Thực ra đó là cửa sổ rõ ràng nhất vào cách toàn bộ ví được xây dựng."
+  },
+  "phrase-to-seed": {
+    "title": "Cụm từ không phải là khóa.",
+    "narration": "Mười hai từ trong bản sao lưu mã hóa 128 bit entropy, và BIP-39 kéo chúng thành một seed 64 byte bằng PBKDF2-HMAC-SHA512, 2048 vòng, cùng một cụm mật khẩu tùy chọn được trộn vào salt. Mọi thứ khác đều được dẫn xuất từ seed này."
+  },
+  "two-curves": {
+    "title": "Một seed, hai cây.",
+    "narration": "Seed sinh ra hai cây khóa độc lập. secp256k1, được Bitcoin, Ethereum và TRON dùng, sử dụng BIP-32, trong đó khóa con được cộng vào khóa cha trên đường cong. Khóa ed25519 của Solana là hạt băm, không phải điểm trên đường cong, nên phép cộng đó không tồn tại, và SLIP-0010 thay thế vào chỗ đó."
+  },
+  "paths": {
+    "title": "Bốn đường dẫn, bốn khóa.",
+    "narration": "Bốn đường dẫn dẫn xuất chọn bốn nhánh. EVM nằm ở coin type 60 của BIP-44; Bitcoin dùng purpose 84 cho native SegWit; Solana là coin type 501; TRON là coin type 195. Các số coin type là những chuẩn đã được đăng ký, và dấu nháy đơn đánh dấu dẫn xuất hardened."
+  },
+  "solana-slip10": {
+    "title": "Vì sao dấu nháy đơn của Solana là bắt buộc.",
+    "narration": "SLIP-0010 loại bỏ một nửa của BIP-32 cần số học trên đường cong. Khóa con trở thành một HMAC của khóa riêng tư và chain code của khóa cha, hoạt động trên mọi đường cong, nhưng chỉ với dẫn xuất hardened. Đó là lý do mọi đoạn đường dẫn của Solana kết thúc bằng dấu nháy đơn, và ed25519 không có khóa công khai mở rộng."
+  },
+  "encodings": {
+    "title": "Bốn cách viết một địa chỉ.",
+    "narration": "Mỗi nhánh mã hóa khóa theo một cách khác nhau. EVM băm khóa không nén bằng keccak-256 và giữ 20 byte với checksum EIP-55. Bitcoin bọc HASH160 của khóa nén trong bech32. Solana mã hóa khóa công khai thô bằng base58. TRON lấy đúng 20 byte như EVM, thêm tiền tố 41 và base58check chúng."
+  },
+  "evm-shared": {
+    "title": "Chín mạng, một khóa.",
+    "narration": "Nhánh EVM không phải là tài khoản Ethereum. Việc dẫn xuất địa chỉ không bao giờ hỏi nó ở chain nào, không có chain ID, không có tên mạng, nên một khóa tạo ra cùng một địa chỉ trên cả chín mạng EVM. Cùng khóa, cùng địa chỉ, trên mọi chain EVM, mãi mãi."
+  },
+  "balances": {
+    "title": "Một địa chỉ, chín sổ cái.",
+    "narration": "Thứ không gộp lại là mọi thứ phía trên khóa. Chín mạng giữ chín sổ cái riêng biệt và chín token gas: ETH trên hầu hết, BNB trên BNB Chain, POL trên Polygon, MON trên Monad. Giữ ETH trên Ethereum không trả phí ở bất kỳ nơi nào khác, và số dư trên một chain là vô hình trên chain kế tiếp."
+  },
+  "secrets": {
+    "title": "Ba bí mật, ba nhiệm vụ.",
+    "narration": "Mật khẩu MetaMask giải mã kho lưu trữ cục bộ và không gì khác. Cụm từ khôi phục khôi phục cả bốn nhánh, và là điểm hỏng duy nhất cho mọi thứ. Một khóa riêng tư kiểm soát đúng một nhánh. Rò rỉ một khóa, mất một nhánh; rò rỉ cụm từ, mất tất cả."
+  },
+  "verify": {
+    "title": "Tự xác minh.",
+    "narration": "Việc dẫn xuất được quy định đầy đủ bởi các chuẩn công khai: BIP-39, BIP-32, BIP-84, SLIP-0010, EIP-55, và kho mã tái tạo nó trong khoảng ba trăm dòng TypeScript, được ghim theo các vector của đặc tả chính thức. Chạy npm run derive và cả bốn tài khoản xuất hiện từ một cụm từ kiểm thử công khai."
+  },
+  "outro": {
+    "title": "Mười hai mạng, bốn tài khoản, một cụm từ.",
+    "narration": "Mã nguồn, hướng dẫn dẫn xuất, giải thích từng dòng và các đánh đổi đều công khai theo giấy phép MIT. Nhập cùng cụm từ kiểm thử công khai vào bất kỳ ví nào tuân thủ chuẩn và bốn địa chỉ khớp nhau. Liên kết ở phần mô tả."
+  }
+}

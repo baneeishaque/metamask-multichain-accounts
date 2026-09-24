@@ -1,0 +1,50 @@
+{
+  "intro": {
+    "title": "Doze redes. Quatro contas. Uma frase.",
+    "narration": "Uma conta MetaMask, doze redes: Ethereum, Linea, Base, Arbitrum, BNB Chain, OP Mainnet, Polygon, Monad, Arc, Bitcoin, Solana e TRON. Mas apenas quatro endereços, e apenas uma chave privada que a carteira mostra. Aqui está o porquê, e como verificar cada etapa por conta própria."
+  },
+  "problem": {
+    "title": "Onde está o resto da minha carteira?",
+    "narration": "A carteira lista doze redes, mas a página de detalhes da conta mostra uma chave privada apenas para a conta EVM. Bitcoin, Solana e TRON mostram um endereço e nada mais. Parece uma lacuna. Na verdade, é a janela mais clara para entender como toda a carteira é construída."
+  },
+  "phrase-to-seed": {
+    "title": "Uma frase não é uma chave.",
+    "narration": "As doze palavras do seu backup codificam 128 bits de entropia, e o BIP-39 as transforma em uma semente de 64 bytes com PBKDF2-HMAC-SHA512, 2048 rodadas e uma passphrase opcional misturada ao salt. É dessa semente que tudo o mais deriva."
+  },
+  "two-curves": {
+    "title": "Uma semente, duas árvores.",
+    "narration": "A semente gera duas árvores de chaves independentes. O secp256k1, usado por Bitcoin, Ethereum e TRON, usa o BIP-32, onde as chaves filhas são somadas à chave pai na curva. As chaves ed25519 da Solana são sementes de hash, não pontos na curva, então essa soma não existe, e o SLIP-0010 toma o seu lugar."
+  },
+  "paths": {
+    "title": "Quatro caminhos, quatro chaves.",
+    "narration": "Quatro caminhos de derivação selecionam os quatro ramos. O EVM fica no coin type 60 do BIP-44; o Bitcoin usa purpose 84 para SegWit nativo; a Solana é coin type 501; o TRON é coin type 195. Os números de coin type são padrões registrados, e os apóstrofos marcam derivação reforçada."
+  },
+  "solana-slip10": {
+    "title": "Por que os apóstrofos da Solana são obrigatórios.",
+    "narration": "O SLIP-0010 remove a metade do BIP-32 que precisa de aritmética de curva. Uma chave filha passa a ser um HMAC da chave privada e do chain code do pai, o que funciona em qualquer curva, mas apenas na derivação reforçada. É por isso que todo segmento do caminho da Solana termina em apóstrofo, e por isso o ed25519 não tem chaves públicas estendidas."
+  },
+  "encodings": {
+    "title": "Quatro formas de escrever um endereço.",
+    "narration": "Cada ramo codifica a sua chave de forma diferente. O EVM faz o hash da chave não comprimida com keccak-256 e mantém 20 bytes com um checksum EIP-55. O Bitcoin envolve um HASH160 da chave comprimida em bech32. A Solana codifica a chave pública bruta em base58. O TRON pega os mesmos 20 bytes do EVM, prefixa 41 e aplica base58check."
+  },
+  "evm-shared": {
+    "title": "Nove redes, uma chave.",
+    "narration": "O ramo EVM não é a conta Ethereum. A derivação de endereço nunca pergunta em qual rede está, não usa chain ID nem nome de rede, então uma chave produz o mesmo endereço nas nove redes EVM. Mesma chave, mesmo endereço, em toda rede EVM, para sempre."
+  },
+  "balances": {
+    "title": "Um endereço, nove livros-razão.",
+    "narration": "O que não se funde é tudo o que está acima da chave. Nove redes mantêm nove livros-razão separados e nove tokens de gas: ETH na maioria, BNB na BNB Chain, POL na Polygon, MON na Monad. Ter ETH na Ethereum não paga taxas em nenhum outro lugar, e um saldo em uma rede é invisível na seguinte."
+  },
+  "secrets": {
+    "title": "Três segredos, três funções.",
+    "narration": "A senha da MetaMask descriptografa o cofre local e nada mais. A frase de recuperação restaura os quatro ramos, e é o ponto único de falha de tudo. Uma chave privada controla exatamente um ramo. Vaze uma chave, perca um ramo; vaze a frase, perca tudo."
+  },
+  "verify": {
+    "title": "Verifique você mesmo.",
+    "narration": "A derivação é totalmente especificada por padrões públicos, BIP-39, BIP-32, BIP-84, SLIP-0010 e EIP-55, e o repositório a reproduz em cerca de trezentas linhas de TypeScript, fixadas contra os vetores oficiais da especificação. Execute npm run derive e as quatro contas aparecem a partir de uma frase de teste pública."
+  },
+  "outro": {
+    "title": "Doze redes, quatro contas, uma frase.",
+    "narration": "O código, o guia de derivação, as explicações linha a linha e os trade-offs são públicos sob a licença MIT. Importe a mesma frase de teste pública em qualquer carteira compatível com os padrões e os quatro endereços coincidem. Link na descrição."
+  }
+}

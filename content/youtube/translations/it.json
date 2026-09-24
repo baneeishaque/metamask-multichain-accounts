@@ -1,0 +1,50 @@
+{
+  "intro": {
+    "title": "Dodici reti. Quattro account. Una frase.",
+    "narration": "Un account MetaMask, dodici reti: Ethereum, Linea, Base, Arbitrum, BNB Chain, OP Mainnet, Polygon, Monad, Arc, Bitcoin, Solana e TRON. Ma solo quattro indirizzi, e solo una chiave privata che il wallet ti mostrerà. Ecco perché, e come verificare ogni passaggio da solo."
+  },
+  "problem": {
+    "title": "Dov'è il resto del mio wallet?",
+    "narration": "Il wallet elenca dodici reti, ma la pagina dei dettagli dell'account mostra una chiave privata solo per l'account EVM. Bitcoin, Solana e TRON mostrano un indirizzo e nient'altro. Sembra una lacuna. In realtà è la finestra più chiara su come è costruito l'intero wallet."
+  },
+  "phrase-to-seed": {
+    "title": "Una frase non è una chiave.",
+    "narration": "Le dodici parole del tuo backup codificano 128 bit di entropia, e BIP-39 le distende in un seed di 64 byte con PBKDF2-HMAC-SHA512, 2048 iterazioni e una passphrase opzionale mescolata al salt. Da quel seed deriva tutto il resto."
+  },
+  "two-curves": {
+    "title": "Un seed, due alberi.",
+    "narration": "Il seed fa crescere due alberi di chiavi indipendenti. secp256k1, cioè Bitcoin, Ethereum e TRON, usa BIP-32, dove le chiavi figlie si sommano alla genitrice sulla curva. Le chiavi ed25519 di Solana sono seed di hash, non punti sulla curva, quindi quella somma non esiste, e SLIP-0010 prende il suo posto."
+  },
+  "paths": {
+    "title": "Quattro percorsi, quattro chiavi.",
+    "narration": "Quattro percorsi di derivazione selezionano i quattro rami. EVM si trova al coin type 60 di BIP-44, Bitcoin usa il purpose 84 per SegWit nativo, Solana è il coin type 501, TRON è il coin type 195. I numeri di coin type sono standard registrati, e gli apostrofi indicano derivazione hardened."
+  },
+  "solana-slip10": {
+    "title": "Perché gli apostrofi di Solana sono obbligatori.",
+    "narration": "SLIP-0010 rimuove la metà di BIP-32 che richiede aritmetica sulle curve. Una chiave figlia diventa un HMAC della chiave privata genitrice e del chain code, che funziona su ogni curva, ma solo per la derivazione hardened. Per questo ogni segmento del percorso di Solana finisce con un apostrofo, e per questo ed25519 non ha chiavi pubbliche estese."
+  },
+  "encodings": {
+    "title": "Quattro modi di scrivere un indirizzo.",
+    "narration": "Ogni ramo codifica la sua chiave in modo diverso. EVM applica keccak-256 alla chiave non compressa e conserva 20 byte con un checksum EIP-55. Bitcoin avvolge un HASH160 della chiave compressa in bech32. Solana codifica in base58 la chiave pubblica grezza. TRON prende gli stessi 20 byte di EVM, antepone 41 e applica base58check."
+  },
+  "evm-shared": {
+    "title": "Nove reti, una chiave.",
+    "narration": "Il ramo EVM non è l'account Ethereum. La derivazione dell'indirizzo non chiede mai su quale catena si trovi, nessun chain ID, nessun nome di rete, quindi una chiave produce lo stesso indirizzo su tutte e nove le reti EVM. Stessa chiave, stesso indirizzo, su ogni catena EVM, per sempre."
+  },
+  "balances": {
+    "title": "Un indirizzo, nove registri.",
+    "narration": "Ciò che non si unifica è tutto ciò che sta sopra la chiave. Nove reti mantengono nove registri separati e nove token per il gas: ETH sulla maggior parte, BNB su BNB Chain, POL su Polygon, MON su Monad. Avere ETH su Ethereum non paga commissioni altrove, e un saldo su una catena è invisibile su quella successiva."
+  },
+  "secrets": {
+    "title": "Tre segreti, tre compiti.",
+    "narration": "La password di MetaMask decifra la cassaforte locale e nient'altro. La frase di recupero ripristina tutti e quattro i rami, è il singolo punto di guasto per tutto. Una chiave privata controlla esattamente un ramo. Perdi una chiave, perdi un ramo; perdi la frase, perdi tutto."
+  },
+  "verify": {
+    "title": "Verificalo da solo.",
+    "narration": "La derivazione è specificata interamente da standard pubblici: BIP-39, BIP-32, BIP-84, SLIP-0010, EIP-55. Il repository la riproduce in circa 300 righe di TypeScript, fissate ai vettori ufficiali della specifica. Esegui npm run derive e tutti e quattro gli account compaiono da una frase di test pubblica."
+  },
+  "outro": {
+    "title": "Dodici reti, quattro account, una frase.",
+    "narration": "Il codice, la guida alla derivazione, le spiegazioni riga per riga e i compromessi sono pubblici con licenza MIT. Importa la stessa frase di test pubblica in qualsiasi wallet conforme agli standard e i quattro indirizzi coincidono. Link in descrizione."
+  }
+}

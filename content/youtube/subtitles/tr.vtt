@@ -1,0 +1,37 @@
+WEBVTT
+
+00:00:00.400 --> 00:00:23.362
+Tek bir MetaMask hesabı, on iki ağ: Ethereum, Linea, Base, Arbitrum, BNB Chain, OP Mainnet, Polygon, Monad, Arc, Bitcoin, Solana ve TRON. Ama yalnızca dört adres var ve cüzdanın size gösterdiği tek bir özel anahtar var. İşte nedeni ve her adımı kendiniz nasıl doğrulayacağınız.
+
+00:00:25.162 --> 00:00:46.267
+Cüzdan on iki ağ listeler, ama hesap ayrıntıları sayfası yalnızca EVM hesabı için bir özel anahtar gösterir. Bitcoin, Solana ve TRON bir adres gösterir, başka bir şey göstermez. Bu bir boşluk gibi görünür. Aslında cüzdanın tamamının nasıl kurulduğuna dair en net penceredir.
+
+00:00:48.067 --> 00:01:08.671
+Yedeklemenizdeki on iki kelime 128 bit entropi kodlar ve BIP-39 bunları PBKDF2-HMAC-SHA512, 2048 tur ve tuzun içine karıştırılan isteğe bağlı bir parola ifadesiyle 64 baytlık bir tohuma dönüştürür. Her şey bu tohumdan türetilir.
+
+00:01:10.471 --> 00:01:36.275
+Tohumdan iki bağımsız anahtar ağacı büyür. Bitcoin, Ethereum ve TRON tarafından kullanılan secp256k1, alt anahtarların eğri üzerinde üst anahtara eklendiği BIP-32'yi kullanır. Solana'nın ed25519 anahtarları eğri noktası değil karma tohumlarıdır, bu yüzden bu toplama yoktur ve yerini SLIP-0010 alır.
+
+00:01:38.075 --> 00:02:01.424
+Dört türetme yolu dört dalı seçer. EVM, BIP-44 coin type 60'ta bulunur; Bitcoin yerel SegWit için purpose 84 kullanır; Solana coin type 501'dir; TRON ise coin type 195'tir. Coin type numaraları kayıtlı standartlardır ve kesme işaretleri güçlendirilmiş türetmeyi gösterir.
+
+00:02:03.224 --> 00:02:30.984
+SLIP-0010, BIP-32'nin eğri aritmetiği gerektiren yarısını kaldırır. Alt anahtar, üst anahtarın özel anahtarı ve chain code'unun bir HMAC'i hâline gelir; bu her eğride çalışır ama yalnızca güçlendirilmiş türetmede çalışır. Bu yüzden her Solana yol parçası kesme işaretiyle biter ve bu yüzden ed25519'da genişletilmiş açık anahtar yoktur.
+
+00:02:32.784 --> 00:03:01.758
+Her dal anahtarını farklı biçimde kodlar. EVM, sıkıştırılmamış anahtarı keccak-256 ile karmalar ve EIP-55 sağlama toplamı ile 20 bayt tutar. Bitcoin, sıkıştırılmış anahtarın HASH160'ını bech32 içine sarar. Solana ham açık anahtarı base58 ile kodlar. TRON, EVM ile aynı 20 baytı alır, başına 41 ekler ve base58check uygular.
+
+00:03:03.558 --> 00:03:23.119
+EVM dalı Ethereum hesabı değildir. Adres türetme hangi zincirde olduğunu asla sormaz; chain ID yok, ağ adı yok. Bu yüzden tek bir anahtar dokuz EVM ağının tamamında aynı adresi üretir. Aynı anahtar, aynı adres, her EVM zincirinde sonsuza kadar.
+
+00:03:24.919 --> 00:03:45.379
+Birleşmeyen şey anahtarın üstündeki her şeydir. Dokuz ağ dokuz ayrı defter ve dokuz gas token tutar: çoğunda ETH, BNB Chain'de BNB, Polygon'da POL, Monad'da MON. Ethereum'da ETH tutmak başka hiçbir yerde ücret ödemez ve bir zincirdeki bakiye bir sonrakinde görünmez.
+
+00:03:47.179 --> 00:04:08.207
+MetaMask parolası yerel kasayı çözer ve başka hiçbir şeyi çözmez. Kurtarma ifadesi dört dalın tamamını geri getirir ve her şey için tek hata noktasıdır. Bir özel anahtar tam olarak bir dalı kontrol eder. Bir anahtar sızarsa bir dal kaybolur; ifade sızarsa her şey kaybolur.
+
+00:04:10.007 --> 00:04:35.572
+Türetme, BIP-39, BIP-32, BIP-84, SLIP-0010 ve EIP-55 gibi açık standartlarla tamamen tanımlanmıştır ve depo bunu resmî şartname vektörlerine sabitlenmiş yaklaşık üç yüz satır TypeScript ile yeniden üretir. npm run derive komutunu çalıştırın ve dört hesap da genel bir test ifadesinden ortaya çıkar.
+
+00:04:37.372 --> 00:04:53.389
+Kod, türetme rehberi, satır satır açıklamalar ve ödünleşimler MIT lisansı altında açıktır. Aynı genel test ifadesini standartlara uyan herhangi bir cüzdana aktarın, dört adres eşleşir. Bağlantı açıklamada.

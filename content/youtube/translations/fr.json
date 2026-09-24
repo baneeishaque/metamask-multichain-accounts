@@ -1,0 +1,50 @@
+{
+  "intro": {
+    "title": "Douze réseaux. Quatre comptes. Une phrase.",
+    "narration": "Un compte MetaMask, douze réseaux : Ethereum, Linea, Base, Arbitrum, BNB Chain, OP Mainnet, Polygon, Monad, Arc, Bitcoin, Solana et TRON. Mais seulement quatre adresses, et une seule clé privée que le portefeuille vous montrera. Voici pourquoi, et comment vérifier chaque étape vous-même."
+  },
+  "problem": {
+    "title": "Où est le reste de mon portefeuille ?",
+    "narration": "Le portefeuille liste douze réseaux, mais la page de détails du compte n'affiche une clé privée que pour le compte EVM. Bitcoin, Solana et TRON affichent une adresse et rien d'autre. Cela ressemble à une lacune. C'est en réalité la fenêtre la plus claire sur la construction de tout le portefeuille."
+  },
+  "phrase-to-seed": {
+    "title": "Une phrase n'est pas une clé.",
+    "narration": "Les douze mots de votre sauvegarde encodent 128 bits d'entropie, et BIP-39 les étire en une graine de 64 octets avec PBKDF2-HMAC-SHA512, 2048 tours et une phrase secrète facultative mêlée au sel. Tout le reste se dérive de cette graine."
+  },
+  "two-curves": {
+    "title": "Une graine, deux arbres.",
+    "narration": "La graine fait pousser deux arbres de clés indépendants. secp256k1, soit Bitcoin, Ethereum et TRON, utilise BIP-32, où les clés filles s'ajoutent à la clé parente sur la courbe. Les clés ed25519 de Solana sont des graines de hachage, pas des points de courbe, donc cette addition n'existe pas, et SLIP-0010 prend sa place."
+  },
+  "paths": {
+    "title": "Quatre chemins, quatre clés.",
+    "narration": "Quatre chemins de dérivation sélectionnent les quatre branches. EVM se trouve au type de pièce 60 de BIP-44, Bitcoin utilise l'objectif 84 pour SegWit natif, Solana est le type de pièce 501, TRON est le type de pièce 195. Les numéros de type de pièce sont des standards enregistrés, et les apostrophes marquent la dérivation durcie."
+  },
+  "solana-slip10": {
+    "title": "Pourquoi les apostrophes de Solana sont obligatoires.",
+    "narration": "SLIP-0010 retire la moitié de BIP-32 qui exige de l'arithmétique de courbes. Une clé fille devient un HMAC de la clé privée parente et du code de chaîne, ce qui fonctionne sur toutes les courbes, mais uniquement pour la dérivation durcie. C'est pourquoi chaque segment du chemin Solana finit par une apostrophe, et pourquoi ed25519 n'a pas de clés publiques étendues."
+  },
+  "encodings": {
+    "title": "Quatre façons d'écrire une adresse.",
+    "narration": "Chaque branche encode sa clé différemment. EVM hache la clé non compressée avec keccak-256 et garde 20 octets avec une somme de contrôle EIP-55. Bitcoin enveloppe un HASH160 de la clé compressée en bech32. Solana encode en base58 la clé publique brute. TRON prend les mêmes 20 octets qu'EVM, préfixe 41 et applique base58check."
+  },
+  "evm-shared": {
+    "title": "Neuf réseaux, une clé.",
+    "narration": "La branche EVM n'est pas le compte Ethereum. La dérivation d'adresse ne demande jamais sur quelle chaîne elle se trouve, pas de chain ID, pas de nom de réseau, donc une clé produit la même adresse sur les neuf réseaux EVM. Même clé, même adresse, sur chaque chaîne EVM, pour toujours."
+  },
+  "balances": {
+    "title": "Une adresse, neuf registres.",
+    "narration": "Ce qui ne fusionne pas, c'est tout ce qui se trouve au-dessus de la clé. Neuf réseaux tiennent neuf registres séparés et neuf jetons de gas : ETH sur la plupart, BNB sur BNB Chain, POL sur Polygon, MON sur Monad. Détenir de l'ETH sur Ethereum ne paie aucun frais ailleurs, et un solde sur une chaîne est invisible sur la suivante."
+  },
+  "secrets": {
+    "title": "Trois secrets, trois rôles.",
+    "narration": "Le mot de passe MetaMask déchiffre le coffre local et rien d'autre. La phrase de récupération restaure les quatre branches, c'est le point de défaillance unique pour tout. Une clé privée contrôle exactement une branche. Une clé fuit, une branche perdue ; la phrase fuit, tout est perdu."
+  },
+  "verify": {
+    "title": "Vérifiez-le vous-même.",
+    "narration": "La dérivation est entièrement spécifiée par des standards publics : BIP-39, BIP-32, BIP-84, SLIP-0010, EIP-55. Le dépôt la reproduit en environ 300 lignes de TypeScript, vérifiées contre les vecteurs officiels de la spécification. Lancez npm run derive et les quatre comptes apparaissent depuis une phrase de test publique."
+  },
+  "outro": {
+    "title": "Douze réseaux, quatre comptes, une phrase.",
+    "narration": "Le code, le guide de dérivation, les explications ligne par ligne et les compromis sont publics sous licence MIT. Importez la même phrase de test publique dans n'importe quel portefeuille conforme aux standards et les quatre adresses correspondent. Lien dans la description."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "intro": {
+    "title": "Dua belas jaringan. Empat akun. Satu frasa.",
+    "narration": "Satu akun MetaMask, dua belas jaringan: Ethereum, Linea, Base, Arbitrum, BNB Chain, OP Mainnet, Polygon, Monad, Arc, Bitcoin, Solana dan TRON. Tapi hanya empat alamat, dan hanya satu kunci privat yang akan ditampilkan wallet. Inilah alasannya, dan cara memverifikasi setiap langkah sendiri."
+  },
+  "problem": {
+    "title": "Di mana sisa wallet saya?",
+    "narration": "Wallet mencantumkan dua belas jaringan, tetapi halaman detail akun hanya menampilkan kunci privat untuk akun EVM. Bitcoin, Solana dan TRON hanya menampilkan alamat tanpa yang lain. Ini terlihat seperti celah. Padahal justru jendela paling jelas ke cara seluruh wallet dibangun."
+  },
+  "phrase-to-seed": {
+    "title": "Frasa bukanlah kunci.",
+    "narration": "Dua belas kata pada cadangan Anda mewakili 128 bit entropi, dan BIP-39 meregangkannya menjadi seed 64 byte dengan PBKDF2-HMAC-SHA512, 2048 putaran, dan frasa sandi opsional yang dicampur ke salt. Seed inilah sumber turunan semua hal lainnya."
+  },
+  "two-curves": {
+    "title": "Satu seed, dua pohon.",
+    "narration": "Seed menumbuhkan dua pohon kunci yang independen. secp256k1, yaitu Bitcoin, Ethereum dan TRON, memakai BIP-32, tempat kunci anak ditambahkan ke kunci induk di atas kurva. Kunci ed25519 milik Solana adalah seed hash, bukan titik kurva, jadi penambahan itu tidak ada, dan SLIP-0010 menggantikannya."
+  },
+  "paths": {
+    "title": "Empat jalur, empat kunci.",
+    "narration": "Empat jalur derivasi memilih empat cabang. EVM berada di tipe koin 60 BIP-44, Bitcoin memakai tujuan 84 untuk SegWit asli, Solana adalah tipe koin 501, TRON adalah tipe koin 195. Nomor tipe koin adalah standar terdaftar, dan apostrof menandai derivasi hardened."
+  },
+  "solana-slip10": {
+    "title": "Mengapa apostrof Solana wajib.",
+    "narration": "SLIP-0010 menghapus separuh BIP-32 yang membutuhkan aritmetika kurva. Kunci anak menjadi HMAC dari kunci privat induk dan chain code, yang bekerja di semua kurva, tetapi hanya untuk derivasi hardened. Itulah sebabnya setiap segmen jalur Solana berakhir dengan apostrof, dan ed25519 tidak punya kunci publik yang diperluas."
+  },
+  "encodings": {
+    "title": "Empat cara menulis alamat.",
+    "narration": "Setiap cabang mengenkode kuncinya dengan cara berbeda. EVM melakukan hash keccak-256 pada kunci tak terkompresi dan menyimpan 20 byte dengan checksum EIP-55. Bitcoin membungkus HASH160 dari kunci terkompresi dalam bech32. Solana mengenkode kunci publik mentah dengan base58. TRON mengambil 20 byte yang sama seperti EVM, menambahkan awalan 41, lalu base58check."
+  },
+  "evm-shared": {
+    "title": "Sembilan jaringan, satu kunci.",
+    "narration": "Cabang EVM bukanlah akun Ethereum. Derivasi alamat tidak pernah bertanya sedang di chain mana, tanpa chain ID, tanpa nama jaringan, sehingga satu kunci menghasilkan alamat yang sama di kesembilan jaringan EVM. Kunci sama, alamat sama, di setiap chain EVM, selamanya."
+  },
+  "balances": {
+    "title": "Satu alamat, sembilan buku besar.",
+    "narration": "Yang tidak menyatu adalah semua hal di atas kunci. Sembilan jaringan menyimpan sembilan buku besar terpisah dan sembilan token gas: ETH di sebagian besar, BNB di BNB Chain, POL di Polygon, MON di Monad. Memegang ETH di Ethereum tidak membayar biaya di tempat lain, dan saldo di satu chain tak terlihat di chain berikutnya."
+  },
+  "secrets": {
+    "title": "Tiga rahasia, tiga tugas.",
+    "narration": "Kata sandi MetaMask mendekripsi vault lokal dan tidak yang lain. Frasa pemulihan memulihkan keempat cabang, ia adalah satu-satunya titik kegagalan untuk semuanya. Kunci privat mengendalikan tepat satu cabang. Bocorkan satu kunci, hilang satu cabang; bocorkan frasa, hilang semuanya."
+  },
+  "verify": {
+    "title": "Verifikasi sendiri.",
+    "narration": "Derivasi sepenuhnya ditentukan oleh standar publik: BIP-39, BIP-32, BIP-84, SLIP-0010, EIP-55. Repositori mereproduksinya dalam sekitar 300 baris TypeScript, dipatok terhadap vektor spesifikasi resmi. Jalankan npm run derive dan keempat akun muncul dari frasa uji publik."
+  },
+  "outro": {
+    "title": "Dua belas jaringan, empat akun, satu frasa.",
+    "narration": "Kode, panduan derivasi, penjelasan baris demi baris dan trade-off-nya tersedia untuk publik di bawah lisensi MIT. Impor frasa uji publik yang sama ke wallet mana pun yang patuh standar dan keempat alamat itu cocok. Tautan di deskripsi."
+  }
+}

@@ -1,0 +1,37 @@
+WEBVTT
+
+00:00:00.400 --> 00:00:19.830
+Un account MetaMask, dodici reti: Ethereum, Linea, Base, Arbitrum, BNB Chain, OP Mainnet, Polygon, Monad, Arc, Bitcoin, Solana e TRON. Ma solo quattro indirizzi, e solo una chiave privata che il wallet ti mostrerà. Ecco perché, e come verificare ogni passaggio da solo.
+
+00:00:21.630 --> 00:00:37.623
+Il wallet elenca dodici reti, ma la pagina dei dettagli dell'account mostra una chiave privata solo per l'account EVM. Bitcoin, Solana e TRON mostrano un indirizzo e nient'altro. Sembra una lacuna. In realtà è la finestra più chiara su come è costruito l'intero wallet.
+
+00:00:39.423 --> 00:00:57.508
+Le dodici parole del tuo backup codificano 128 bit di entropia, e BIP-39 le distende in un seed di 64 byte con PBKDF2-HMAC-SHA512, 2048 iterazioni e una passphrase opzionale mescolata al salt. Da quel seed deriva tutto il resto.
+
+00:00:59.308 --> 00:01:22.000
+Il seed fa crescere due alberi di chiavi indipendenti. secp256k1, cioè Bitcoin, Ethereum e TRON, usa BIP-32, dove le chiavi figlie si sommano alla genitrice sulla curva. Le chiavi ed25519 di Solana sono seed di hash, non punti sulla curva, quindi quella somma non esiste, e SLIP-0010 prende il suo posto.
+
+00:01:23.800 --> 00:01:45.566
+Quattro percorsi di derivazione selezionano i quattro rami. EVM si trova al coin type 60 di BIP-44, Bitcoin usa il purpose 84 per SegWit nativo, Solana è il coin type 501, TRON è il coin type 195. I numeri di coin type sono standard registrati, e gli apostrofi indicano derivazione hardened.
+
+00:01:47.366 --> 00:02:09.953
+SLIP-0010 rimuove la metà di BIP-32 che richiede aritmetica sulle curve. Una chiave figlia diventa un HMAC della chiave privata genitrice e del chain code, che funziona su ogni curva, ma solo per la derivazione hardened. Per questo ogni segmento del percorso di Solana finisce con un apostrofo, e per questo ed25519 non ha chiavi pubbliche estese.
+
+00:02:11.753 --> 00:02:36.742
+Ogni ramo codifica la sua chiave in modo diverso. EVM applica keccak-256 alla chiave non compressa e conserva 20 byte con un checksum EIP-55. Bitcoin avvolge un HASH160 della chiave compressa in bech32. Solana codifica in base58 la chiave pubblica grezza. TRON prende gli stessi 20 byte di EVM, antepone 41 e applica base58check.
+
+00:02:38.542 --> 00:02:56.380
+Il ramo EVM non è l'account Ethereum. La derivazione dell'indirizzo non chiede mai su quale catena si trovi, nessun chain ID, nessun nome di rete, quindi una chiave produce lo stesso indirizzo su tutte e nove le reti EVM. Stessa chiave, stesso indirizzo, su ogni catena EVM, per sempre.
+
+00:02:58.180 --> 00:03:16.643
+Ciò che non si unifica è tutto ciò che sta sopra la chiave. Nove reti mantengono nove registri separati e nove token per il gas: ETH sulla maggior parte, BNB su BNB Chain, POL su Polygon, MON su Monad. Avere ETH su Ethereum non paga commissioni altrove, e un saldo su una catena è invisibile su quella successiva.
+
+00:03:18.443 --> 00:03:35.378
+La password di MetaMask decifra la cassaforte locale e nient'altro. La frase di recupero ripristina tutti e quattro i rami, è il singolo punto di guasto per tutto. Una chiave privata controlla esattamente un ramo. Perdi una chiave, perdi un ramo; perdi la frase, perdi tutto.
+
+00:03:37.178 --> 00:04:00.195
+La derivazione è specificata interamente da standard pubblici: BIP-39, BIP-32, BIP-84, SLIP-0010, EIP-55. Il repository la riproduce in circa 300 righe di TypeScript, fissate ai vettori ufficiali della specifica. Esegui npm run derive e tutti e quattro gli account compaiono da una frase di test pubblica.
+
+00:04:01.995 --> 00:04:16.896
+Il codice, la guida alla derivazione, le spiegazioni riga per riga e i compromessi sono pubblici con licenza MIT. Importa la stessa frase di test pubblica in qualsiasi wallet conforme agli standard e i quattro indirizzi coincidono. Link in descrizione.
